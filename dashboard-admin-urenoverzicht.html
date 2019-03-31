@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard Admin-Urenoverzicht</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+</head>
+<body>
+	<nav>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+  				<li><a href="dashboard-trainee.html"  class="subs">Uitloggen</a></li>
+  				<li><a href="dashboard-trainee.html">Beheer</a></li>
+  				<li><a href="dashboard-trainee.html">Klanten</a></li>
+  				<li><a href="dashboard-trainee.html">Trainees</a></li>
+  				<li><a href="dashboard-admin-declaratieoverzicht.html">Declaraties</a></li>
+				<li ><a href="dashboard-admin-urenoverzicht.html" class="active">Uren</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="wrapper">
+		<h1>Urenoverzicht</h1>
+	<div id="urenTabelOverzichtDiv">
+			<table id="TabelOverzicht">
+				<thead>
+				<tr class="urenTabelOverzichtHeader">
+					<th onclick="SortTable(0,'T')">Voornaam &#9662; &#9652;</th>
+					<th onclick="SortTable(1,'T');">Achternaam &#9662; &#9652;</th>
+					<th onclick="SortTable(2,'T');">Soort &#9662; &#9652;</th>
+					<th onclick="SortTable(3,'N');">Aantal &#9662; &#9652;</th>
+					<th onclick="SortTable(4,'T');">Klant &#9662; &#9652;</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="urenTabelOverzichtRow">
+					<td class="firstName">Karel</td>
+					<td class="lastName">Bakker</td>
+					<td class="soort">verlof Uren</td>
+					<td class="aantalUren">40</td>
+					<td class="klantNaam">NOS</td>
+				</tr>
+				<tr class="urenTabelOverzichtRow">
+					<td class="firstName">Jan</td>
+					<td class="lastName">Bakker</td>
+					<td class="soort">gewerkte Uren</td>
+					<td class="aantalUren">67</td>
+					<td class="klantNaam">NOS</td>
+				</tr>
+				<tr class="urenTabelOverzichtRow">
+					<td class="firstName">Karel</td>
+					<td class="lastName">Berger</td>
+					<td class="soort">verlof Uren</td>
+					<td class="aantalUren">40</td>
+					<td class="klantNaam">NOS</td>
+				</tr>
+				<tr class="urenTabelOverzichtRow">
+					<td class="firstName">Piet</td>
+					<td class="lastName">Snot</td>
+					<td class="soort">ziekte Uren</td>
+					<td class="aantalUren">40</td>
+					<td class="klantNaam">NOS</td>
+				</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+
+<script type="text/javascript" src="jScript.js"></script>
+</body>
+</html>

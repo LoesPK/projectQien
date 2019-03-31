@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard Admin-Urenoverzicht</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+</head>
+<body>
+	<nav>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+  				<li><a href="index.html"  class="subs">Uitloggen</a></li>
+  				<li><a href="dashboard-trainee.html">Beheer</a></li>
+  				<li><a href="dashboard-trainee.html">Klanten</a></li>
+  				<li><a href="dashboard-trainee.html">Trainees</a></li>
+  				<li><a href="dashboard-admin-declaratieoverzicht.html"  class="active">Declaraties</a></li>
+				<li ><a href="dashboard-admin-urenoverzicht.html">Uren</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="wrapper">
+		<h1>Declaratie overzicht</h1>
+	<div id="declaratieTabelOverzichtDiv">
+			<table id="TabelOverzicht">
+				<thead>
+				<tr class="declaratieTabelOverzichtHeader">
+					<th onclick="SortTable(0,'T')">Voornaam &#9662; &#9652;</th>
+					<th onclick="SortTable(1,'T')">Achternaam &#9662; &#9652;</th>
+					<th onclick="SortTable(2,'T')">Soort &#9662; &#9652;</th>
+					<th onclick="SortTable(3,'N')">Kosten &#9662; &#9652;</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="declaratieOverzichtRow">
+					<td class="firstName">Karel</td>
+					<td class="lastName">Bakker</td>
+					<td class="soort">overige kosten</td>
+					<td class="kosten">150</td>
+				</tr>
+				<tr class="declaratieTabelOverzichtRow" >
+					<td class="firstName">Henk</td>
+					<td class="lastName">Stoker</td>
+					<td class="soort">reiskosten - trein</td>
+					<td class="kosten">20</td>
+				</tr>
+				<tr class="declaratieTabelOverzichtRow">
+					<td class="firstName">Bart</td>
+					<td class="lastName">Peters</td>
+					<td class="soort">reiskosten - auto</td>
+					<td class="kosten">75</td>
+				</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+
+<script type="text/javascript" src="jScript.js"></script>
+</body>
+</html>

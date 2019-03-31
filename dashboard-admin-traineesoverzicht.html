@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> traineetest</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="getData()">
+
+
+<div id="traineelijst"></div>
+
+<button><a href="dashboard-admin_trainee-aanmaken.html">  Maak nieuwe trainee aan</a></button>
+<br/>
+Verwijder index:<input id="number" type="number" max="1" default="1" name="DeleteNummer">
+<button onclick="NumberDelete();document.location.reload(true)">Delete trainee</button>
+<br/>
+
+<p>Welke trainee wilt u wijzigen? Voer het ID in</p>
+Wijzig index:<input id="numberW" type="number" max="1" default="1" name="wijzigen">
+<button onclick="NumberWijzigen()">Toon trainee</button>
+<div id="traineeIndividu"></div>
+<button onclick="wijzigTrainee();document.location.reload(true)">Wijzig trainee</button>
+<br/>
+<br/>
+
+<button id="exporting" onclick="export_table_to_csv('Trainees.csv')">Export tabel</button>
+
+<script type="text/javascript" src="xmlhttp.js"></script>
+<script type="text/javascript" src="trainees.js"></script>
+</body>
+</html>

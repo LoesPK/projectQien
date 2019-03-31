@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard Trainee | Declaraties</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+</head>
+<body >
+	<nav>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+				<li><a href="index.html">uitloggen</a></li>
+				<li><a href="dashboard-trainee-declaraties.html" class="active">Declaraties</a></li>
+  				<li><a href="dashboard-trainee.html" >Uren</a></li>
+			</ul>
+		</div>
+	</nav>
+<div class="wrapperDeclaraties">
+	<div class="container">
+		<h1>Declaraties</h1>
+
+		<div id="delcaratieTabelDiv">
+			<table id="declaratieTabel">
+				<tr class="declaratieHeader">
+					<th>Periode</th>
+					<th>Soort</th>
+					<th>Kosten</th>
+					<th>Bijlagen</th>
+				</tr>
+				<tr>
+					<td colspan=4><button id="addButtonDecla" onclick="addRowDeclaratieTabel()">+</button></td>
+				</tr>
+				<tr class="declaratiesRow" id="declaratieRow">
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>
+						 
+						<!-- <button class = "bijlageToevoegen" id="bijlagen"> -->
+							<input type="file" id="addBijlage" multiple></input>
+						<!-- </button> -->
+
+					</td>
+				</tr>
+			</table>
+
+		</div>
+		<button onclick="verzondenDeclaraties()">Verzenden</button>
+	</div>
+		
+</div>
+
+
+<script type="text/javascript" src="jScript.js"></script>
+</body>
+</html>
