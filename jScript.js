@@ -35,7 +35,9 @@ function getUren(){
       if (this.readyState == 4 && this.status == 200) {
   		console.log(this.responseText);
     	var uren = JSON.parse(this.responseText);	
-      // console.log(tijdsform.length);
+      	for(var i = 0; i<uren.length; i++){
+      		 GETRowUrenTabel(uren[i]);
+      	}
      			return uren;
       }
     };
@@ -87,22 +89,47 @@ function posttijd(tijd){
 
 //Uren versturen functie
 function UrenVersturen(){
-	// var uur = urenFields();
-   // console.log(document.getElementById("apiUrl").value);
-   for(var i = 0; i<=aantalID; i++){
-  var waarde = document.getElementById("select"+i).value;
-  var aantal = document.getElementById("aantal"+i).value; 
-  var datum = new Date(document.getElementById("datum"+i).value);
-  var row = document.getElementById("select"+i).parentNode.parentNode;
-  var uur = {}
- 	uur.waarde = waarde;
- 	uur.aantal = aantal;
- 	uur.factuurDatum = datum;
- 	uur.omschrijving = "tekst";
- 	urenlijst.push(uur);
-	PostData(JSON.stringify(uur),row);	
-	// tijdFields(JSON.stringify(uur));
-	};	
+	var urenlijst = new Array();
+	var table = document.getElementById("urenTabel");
+	console.log(table);
+	// var aantal = table.children[2];
+	var tablebody = table.children[2];
+	var aantal = tablebody.children.length;
+
+console.log("Start loop" + aantal);
+
+   for(var i = 0; i<aantal; i++){
+ 	var uur = {}
+   	var tablerow = tablebody.children[i];
+   	uur.id = tablerow.id;
+	var c = tablerow.children;
+	
+	//datumveld
+	var ch0 = c[0];
+	var chi0 = ch0.children[0];
+	console.log(chi0.value);
+	//soort uren veld
+	var ch = c[1];
+	console.log(ch);
+	var chi = ch.children[0];
+	var chiVal = chi.value;
+	//aantal urenveld
+	var ch2 = c[2];
+	var chi2 = ch2.children[0];
+	console.log(chi2.value);
+
+  uur.waarde = chiVal;
+  uur.aantal = chi2.value; 
+  var d = new Date(chi0.value);
+  uur.factuurDatum = d;
+
+  urenlijst.push(uur);
+
+
+ 	if(tablerow.id == 0){
+	PostData(JSON.stringify(uur),tablerow);	
+	 };	
+}
 }
 
 //POST uren
@@ -116,7 +143,7 @@ function PostData(data, rij){
     	console.log(rij.id);
     	
         }
-        tijdVersturen();
+        // tijdVersturen();
   };
   xhttp.open("POST", api, true);
 	xhttp.setRequestHeader("Content-type", "application/json");
@@ -140,11 +167,43 @@ function drop(selectID){
 	}
 }
 
+function GETRowUrenTabel(uur){
+	var table = document.getElementById("urenTabel");
+	var insertedRow = table.insertRow(3);
+	insertedRow.id = uur.id;
+
+	var insertedCell = insertedRow.insertCell(0);
+	var elm = document.createElement("input");
+	elm.type = "date";
+	console.log(uur.factuurDatum);
+	elm.value = uur.factuurDatum.substring(0,10);
+	insertedCell.appendChild(elm);
+
+	var insertedCell1 = insertedRow.insertCell(1);
+
+	var elm1 = document.createElement("select");
+	var elm2 = document.createElement("OPTION");
+	
+	console.log(uur.waarde);
+	elm2.innerHTML = uur.waarde;
+	elm1.appendChild(elm2);
+
+	insertedCell1.appendChild(elm1);
+
+	var insertedCell2 = insertedRow.insertCell(2);
+	var emp3 = document.createElement("input");
+	emp3.type = "number";
+	emp3.value = uur.aantal;
+				
+				insertedCell2.appendChild(emp3);
+}
+
 //functie om rijen toe te voegen aan de tabel
 function addRowUrenTabel(){
 	
 	table = document.getElementById("urenTabel");
-	var insertedRow = table.insertRow(1);
+	var insertedRow = table.insertRow(2);
+	insertedRow.id = "0";
 	insertedRow.className = "urenRow";
 	for(var i = 0; i<3; i++){
 		var insertedCell = insertedRow.insertCell(i);

@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body onload="drop(0), getData()">
+<body onload="drop(0), getUren()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -34,8 +34,8 @@
 				<tr>
 					</td>
 				</tr>
-				<tbody>
-				<tr class="urenRow">
+				<tbody id="urenbody">
+				<tr class="urenRow" id="0">
 					<td>
 						<input type="date" name="datum" id="datum0"></td>
 					<td>
@@ -51,10 +51,7 @@
 
 		</div>
 		<button onclick="UrenVersturen()">Verzenden</button>
-		<button onclick="tijdVersturen()">verstuur formulier</button>
 	</div>
-		
-		<button onclick="getData()">tijdsformulier</button>
 </div>
 
 
