@@ -37,20 +37,20 @@
 				<tbody id="urenbody">
 				<tr id="0">
 					<td>
-						<input type="date" name="datum" id="datum0"></td>
+						<input type="date" name="datum" id="datum0" required="required"/></td>
 					<td>
 						<select id="select0">
-							<option value="Gewerkte Uren" >Gewerkte Uren</option>
+							<option value="Gewerkte Uren" required="required"/>Gewerkte Uren</option>
 						</select>
 					</td>
-					<td><input type="number" name="aantal" min="0" max="24" value="8" id="aantal0"></td>
+					<td><input type="number" name="aantal" min="0" max="24" value="8" id="aantal0" required="required"/></td>
 				</tr>
 				</tbody>
 			</table>
 
 
 		</div>
-		<button onclick="UrenVersturen()">Opslaan</button>
+		<button type ="submit" value="opslaan" onclick="UrenVersturen()">Opslaan</button>
 		<button onclick="UrenBlokkeren()">Verzenden</button>
 	</div>
 </div>

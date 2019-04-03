@@ -11,6 +11,17 @@ var api2 = "http://localhost:8082/api/tijdsformulier";
 // var tijdsform = getData();
 var urenlijst = new Array();
 
+//Dropdown menu opbouwen
+function drop(selectID){
+	var select = document.getElementById("select"+selectID),
+	arr = ["Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
+	for(var i = 0; i<arr.length; i++){
+		var option = document.createElement("OPTION"),
+		txt = document.createTextNode(arr[i]);
+		option.appendChild(txt);
+		select.insertBefore(option,select.lastChild);
+	}
+}
 
 //GET tijdsformulier
 function getData(){
@@ -27,8 +38,6 @@ function getData(){
 	    xhttp.setRequestHeader("Content-type", "application/json");
 	    xhttp.send();	
 }
-
-
 
 // uren koppelen aan tijdsformulier functie
 function tijdVersturen(){
@@ -70,9 +79,28 @@ function posttijd(tijd){
 	xhttp.send(tijd);
 }
 
+//GET uren
+function getUren(){
+ 	 	var xhttp = new XMLHttpRequest();
+    	xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+  		console.log(this.responseText);
+    	var uren = JSON.parse(this.responseText);	
+      	for(var i = 0; i<uren.length; i++){
+      		 GETRowUrenTabel(uren[i]);
+      	}
+     			return uren;
+      }
+    };
+      xhttp.open("GET", api, true);
+	    xhttp.setRequestHeader("Content-type", "application/json");
+	    xhttp.send();	
+};
+
 
 //Uren versturen functie
 function UrenVersturen(){
+
 	var urenlijst = new Array();
 	var table = document.getElementById("urenTabel");
 	console.log(table);
@@ -88,23 +116,22 @@ console.log("Start loop" + aantal);
    	var tablerow = tablebody.children[i];
    	uur.id = tablerow.id;
 	var c = tablerow.children;
-	
-	
-	//soort uren veld
+
+	// ------- soort uren veld -------//
 	var ch = c[1];
-	console.log(ch);
+	// console.log(ch);
 	var chi = ch.children[0];
 	var chiVal = chi.value;
-	//datumveld
+	// ------- datumveld -------//
 	var ch0 = c[0];
-	console.log("ch0" + ch0);
+	// console.log("ch0" + ch0);
 	var chi0 = ch0.children[0];
-	console.log("chi0" + chi0);
+	// console.log("chi0" + chi0);
 	console.log(chi0.value);
-	//aantal urenveld
+	// ------- aantal urenveld -------//
 	var ch2 = c[2];
 	var chi2 = ch2.children[0];
-	console.log(chi2.value);
+	// console.log(chi2.value);
 
  	uur.waarde = chiVal;
 	uur.aantal = chi2.value; 
@@ -120,11 +147,13 @@ console.log("Start loop" + aantal);
 		 };
 	//PUT alleen als het id van uren geen 0 is (ofwel, hij staat al in de database) en als de waarde daadwerkelijk anders is geworden.
 		if(tablerow.id !=0){
-			console.log(tablerow);
-			console.log(tablerow.id);
-			console.log("chi0.val = " + chi0.value );
-			console.log("chival = " + chiVal );
-			console.log("chi2.val = " + chi2.value );
+			// var datum = uur.id.factuurDatum;
+			console.log(uur.factuurDatum);
+			// console.log(tablerow);
+			// console.log(tablerow.id);
+			// console.log("chi0.val = " + chi0.value );
+			// console.log("chival = " + chiVal );
+			// console.log("chi2.val = " + chi2.value );
 		 	if(chi0.value != uur.factuurDatum){
 		 		console.log("niet gelijk datum");
 		 		wijzigUur(uur);
@@ -140,68 +169,6 @@ console.log("Start loop" + aantal);
 		};	
 		
 	}
-}
-
-
-// function UrenBlokkeren(){
-// 	var table = document.getElementById("urenTabel");
-// 	console.log(table);
-// 	// var aantal = table.children[2];
-// 	var tablebody = table.children[2];
-// 	console.log(tablebody);
-// 	var aantal = tablebody.children.length;
-
-// console.log("Start loop" + aantal);
-
-//    for(var i = 0; i<aantal; i++){
-//  	var uur = {}
-//    	var tablerow = tablebody.children[i];
-//    	uur.id = tablerow.id;
-// 	var c = tablerow.children;
-// 		// console.log("chi " + ch);
-// 		// console.log("chi0 " + chi0);
-// 		// console.log("chi2 " + chi2);
-// 	//soort uren veld
-// 	var ch = c[1];
-// 	var chi = ch.children[0];
-
-// 	chi.readOnly =true;
-// 	//datumveld
-// 	var ch0 = c[0];
-
-// 	var chi0 = ch0.children[0];
-
-// 	chi0.readOnly =true;
-
-// 	//aantal urenveld
-// 	var ch2 = c[2];
-// 	var chi2 = ch2.children[0];
-
-// 	chi2.readOnly =true;
-
-// 	var d = new Date(chi0.value);
-// };
-
-// }
-
-
-//PUT uren
-function wijzigUur(uur) {
-   var xhttp = new XMLHttpRequest();
-
-   xhttp.onreadystatechange = function () {
-       if (this.readyState == 4) {
-           if (this.status == 200) {
-               // alert("Uur is gewijzigd");
-           } else {
-               alert(this.statusText)
-           }
-       }
-   };
-   
-   xhttp.open("PUT", api+uur.id, true);
-   xhttp.setRequestHeader("Content-type", "application/json");
-   xhttp.send(JSON.stringify(uur));  
 }
 
 //POST uren
@@ -221,35 +188,23 @@ function PostData(data, rij){
 	xhttp.send(data);
 }
 
-//Dropdown menu opbouwen
-function drop(selectID){
-	var select = document.getElementById("select"+selectID),
-	arr = ["Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
-	for(var i = 0; i<arr.length; i++){
-		var option = document.createElement("OPTION"),
-		txt = document.createTextNode(arr[i]);
-		option.appendChild(txt);
-		select.insertBefore(option,select.lastChild);
-	}
-}
+//PUT uren
+function wijzigUur(uur) {
+   var xhttp = new XMLHttpRequest();
 
-//GET uren
-function getUren(){
- 	 	var xhttp = new XMLHttpRequest();
-    	xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-  		console.log(this.responseText);
-    	var uren = JSON.parse(this.responseText);	
-      	for(var i = 0; i<uren.length; i++){
-      		 GETRowUrenTabel(uren[i]);
-      	}
-     			return uren;
-      }
-    };
-      xhttp.open("GET", api, true);
-	    xhttp.setRequestHeader("Content-type", "application/json");
-	    xhttp.send();	
-};
+   xhttp.onreadystatechange = function () {
+       if (this.readyState == 4) {
+           if (this.status == 200) {
+           } else {
+               alert(this.statusText)
+           }
+       }
+   };
+   
+   xhttp.open("PUT", api+uur.id, true);
+   xhttp.setRequestHeader("Content-type", "application/json");
+   xhttp.send(JSON.stringify(uur));  
+}
 
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(uur){
@@ -305,7 +260,7 @@ function addRowUrenTabel(){
 				var temp1 = document.createElement("input");
 				temp1.type = "date";
 				temp1.id = "datum"+dateID; 
-				
+				// temp1.required = "required";
 				insertedCell.appendChild(temp1);
 			}
 			//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
@@ -365,7 +320,46 @@ function addRowDeclaratieTabel(){
 
 
 
+// function UrenBlokkeren(){
+// 	var table = document.getElementById("urenTabel");
+// 	console.log(table);
+// 	// var aantal = table.children[2];
+// 	var tablebody = table.children[2];
+// 	console.log(tablebody);
+// 	var aantal = tablebody.children.length;
 
+// console.log("Start loop" + aantal);
+
+//    for(var i = 0; i<aantal; i++){
+//  	var uur = {}
+//    	var tablerow = tablebody.children[i];
+//    	uur.id = tablerow.id;
+// 	var c = tablerow.children;
+// 		// console.log("chi " + ch);
+// 		// console.log("chi0 " + chi0);
+// 		// console.log("chi2 " + chi2);
+// 	//soort uren veld
+// 	var ch = c[1];
+// 	var chi = ch.children[0];
+
+// 	chi.readOnly =true;
+// 	//datumveld
+// 	var ch0 = c[0];
+
+// 	var chi0 = ch0.children[0];
+
+// 	chi0.readOnly =true;
+
+// 	//aantal urenveld
+// 	var ch2 = c[2];
+// 	var chi2 = ch2.children[0];
+
+// 	chi2.readOnly =true;
+
+// 	var d = new Date(chi0.value);
+// };
+
+// }
 
 
 
