@@ -1,4 +1,3 @@
-// var IDRow = 0;
 var IDCell = 1;
 var selectID = 0;
 var dateID = 0;
@@ -7,9 +6,35 @@ var aantalID = 0;
 var date = new Date();
 //Loes: de twee api's
 var api = "http://localhost:8082/api/uur/";
-var api2 = "http://localhost:8082/api/tijdsformulier";
+var api2 = "http://localhost:8082/api/trainee";
 // var tijdsform = getData();
 var urenlijst = new Array();
+
+//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd (was een bug)
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //As January is 0.
+var yyyy = today.getFullYear();
+if(dd<10) dd='0'+dd;
+if(mm<10) mm='0'+mm;
+today = yyyy+'-'+mm+'-'+dd ;
+function setCurrentDate(){
+	var datumveld = document.getElementById("datum0");
+	datumveld.value = today;
+}
+
+//Bepalen huidige datum voor restrictie op het invullen van uren
+var maxDate = new Date();
+var mm = (new Date().getMonth()+1)%12 + 1; //January is 0!
+var yyyy = maxDate.getFullYear();
+    if(mm<10){
+        mm='0'+mm
+    } 
+maxDate = (yyyy+'-'+mm+'-'+'01');
+function setMaxDatum(){
+	var datumveld = document.getElementById("datum0");
+	datumveld.setAttribute("max", maxDate);
+}
 
 //Dropdown menu opbouwen
 function drop(selectID){
@@ -23,8 +48,9 @@ function drop(selectID){
 	}
 }
 
+
 //GET tijdsformulier
-function getData(){
+function getTrainee(){
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -217,6 +243,8 @@ function GETRowUrenTabel(uur){
 	elm.type = "date";
 	console.log(uur.factuurDatum);
 	elm.value = uur.factuurDatum.substring(0,10);
+	elm.setAttribute("max", maxDate);
+	console.log(elm);
 	insertedCell.appendChild(elm);
 	//soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
@@ -260,6 +288,9 @@ function addRowUrenTabel(){
 				var temp1 = document.createElement("input");
 				temp1.type = "date";
 				temp1.id = "datum"+dateID; 
+				temp1.setAttribute("max", maxDate);
+				temp1.value = today;
+				console.log(temp1.value)
 				// temp1.required = "required";
 				insertedCell.appendChild(temp1);
 			}

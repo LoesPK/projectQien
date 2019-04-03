@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body onload="drop(0), getUren()">
+<body onload="drop(0), getUren(), setMaxDatum(), setCurrentDate()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -37,7 +37,7 @@
 				<tbody id="urenbody">
 				<tr id="0">
 					<td>
-						<input type="date" name="datum" id="datum0" required="required"/></td>
+						<input type="date" name="datum" id="datum0" max="today" required="required"/></td>
 					<td>
 						<select id="select0">
 							<option value="Gewerkte Uren" required="required"/>Gewerkte Uren</option>
