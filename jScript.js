@@ -28,23 +28,7 @@ function getData(){
 	    xhttp.send();	
 }
 
-//GET uren
-function getUren(){
- 	 	var xhttp = new XMLHttpRequest();
-    	xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-  		console.log(this.responseText);
-    	var uren = JSON.parse(this.responseText);	
-      	for(var i = 0; i<uren.length; i++){
-      		 GETRowUrenTabel(uren[i]);
-      	}
-     			return uren;
-      }
-    };
-      xhttp.open("GET", api, true);
-	    xhttp.setRequestHeader("Content-type", "application/json");
-	    xhttp.send();	
-};
+
 
 // uren koppelen aan tijdsformulier functie
 function tijdVersturen(){
@@ -94,6 +78,7 @@ function UrenVersturen(){
 	console.log(table);
 	// var aantal = table.children[2];
 	var tablebody = table.children[2];
+	console.log(tablebody);
 	var aantal = tablebody.children.length;
 
 console.log("Start loop" + aantal);
@@ -104,32 +89,119 @@ console.log("Start loop" + aantal);
    	uur.id = tablerow.id;
 	var c = tablerow.children;
 	
-	//datumveld
-	var ch0 = c[0];
-	var chi0 = ch0.children[0];
-	console.log(chi0.value);
+	
 	//soort uren veld
 	var ch = c[1];
 	console.log(ch);
 	var chi = ch.children[0];
 	var chiVal = chi.value;
+	//datumveld
+	var ch0 = c[0];
+	console.log("ch0" + ch0);
+	var chi0 = ch0.children[0];
+	console.log("chi0" + chi0);
+	console.log(chi0.value);
 	//aantal urenveld
 	var ch2 = c[2];
 	var chi2 = ch2.children[0];
 	console.log(chi2.value);
 
-  uur.waarde = chiVal;
-  uur.aantal = chi2.value; 
-  var d = new Date(chi0.value);
-  uur.factuurDatum = d;
+ 	uur.waarde = chiVal;
+	uur.aantal = chi2.value; 
+	var d = new Date(chi0.value);
+	uur.factuurDatum = d;
 
-  urenlijst.push(uur);
+  	urenlijst.push(uur);
 
-
- 	if(tablerow.id == 0){
-	PostData(JSON.stringify(uur),tablerow);	
-	 };	
+  	//POST alleen als het id van uren 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
+	 	if(tablerow.id == 0){
+	 		console.log(tablerow.id);
+			PostData(JSON.stringify(uur),tablerow);	
+		 };
+	//PUT alleen als het id van uren geen 0 is (ofwel, hij staat al in de database) en als de waarde daadwerkelijk anders is geworden.
+		if(tablerow.id !=0){
+			console.log(tablerow);
+			console.log(tablerow.id);
+			console.log("chi0.val = " + chi0.value );
+			console.log("chival = " + chiVal );
+			console.log("chi2.val = " + chi2.value );
+		 	if(chi0.value != uur.factuurDatum){
+		 		console.log("niet gelijk datum");
+		 		wijzigUur(uur);
+		 	}
+		 	if(chiVal != uur.waarde){
+		 		console.log("niet gelijk uurwaarde");
+		 		wijzigUur(uur);
+		 	}
+		 	if(chi2.value != uur.aantal){
+		 		console.log("niet gelijk aantal");
+		 		wijzigUur(uur);
+		 	}
+		};	
+		
+	}
 }
+
+
+// function UrenBlokkeren(){
+// 	var table = document.getElementById("urenTabel");
+// 	console.log(table);
+// 	// var aantal = table.children[2];
+// 	var tablebody = table.children[2];
+// 	console.log(tablebody);
+// 	var aantal = tablebody.children.length;
+
+// console.log("Start loop" + aantal);
+
+//    for(var i = 0; i<aantal; i++){
+//  	var uur = {}
+//    	var tablerow = tablebody.children[i];
+//    	uur.id = tablerow.id;
+// 	var c = tablerow.children;
+// 		// console.log("chi " + ch);
+// 		// console.log("chi0 " + chi0);
+// 		// console.log("chi2 " + chi2);
+// 	//soort uren veld
+// 	var ch = c[1];
+// 	var chi = ch.children[0];
+
+// 	chi.readOnly =true;
+// 	//datumveld
+// 	var ch0 = c[0];
+
+// 	var chi0 = ch0.children[0];
+
+// 	chi0.readOnly =true;
+
+// 	//aantal urenveld
+// 	var ch2 = c[2];
+// 	var chi2 = ch2.children[0];
+
+// 	chi2.readOnly =true;
+
+// 	var d = new Date(chi0.value);
+// };
+
+// }
+
+
+//PUT uren
+function wijzigUur(uur) {
+   var xhttp = new XMLHttpRequest();
+
+   xhttp.onreadystatechange = function () {
+       if (this.readyState == 4) {
+           if (this.status == 200) {
+               // alert("Uur is gewijzigd");
+           } else {
+               alert(this.statusText)
+           }
+       }
+   };
+   
+   xhttp.open("PUT", api+uur.id, true);
+   xhttp.setRequestHeader("Content-type", "application/json");
+   xhttp.send(JSON.stringify(uur));  
 }
 
 //POST uren
@@ -143,16 +215,10 @@ function PostData(data, rij){
     	console.log(rij.id);
     	
         }
-        // tijdVersturen();
   };
   xhttp.open("POST", api, true);
 	xhttp.setRequestHeader("Content-type", "application/json");
 	xhttp.send(data);
-}
-
-
-function verzondenDeclaraties(){
-	alert("Uw declaraties zijn verzonden");
 }
 
 //Dropdown menu opbouwen
@@ -167,35 +233,60 @@ function drop(selectID){
 	}
 }
 
+//GET uren
+function getUren(){
+ 	 	var xhttp = new XMLHttpRequest();
+    	xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+  		console.log(this.responseText);
+    	var uren = JSON.parse(this.responseText);	
+      	for(var i = 0; i<uren.length; i++){
+      		 GETRowUrenTabel(uren[i]);
+      	}
+     			return uren;
+      }
+    };
+      xhttp.open("GET", api, true);
+	    xhttp.setRequestHeader("Content-type", "application/json");
+	    xhttp.send();	
+};
+
+//GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(uur){
 	var table = document.getElementById("urenTabel");
 	var insertedRow = table.insertRow(3);
 	insertedRow.id = uur.id;
-
+	//datum
 	var insertedCell = insertedRow.insertCell(0);
 	var elm = document.createElement("input");
 	elm.type = "date";
 	console.log(uur.factuurDatum);
 	elm.value = uur.factuurDatum.substring(0,10);
 	insertedCell.appendChild(elm);
-
+	//soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
-
 	var elm1 = document.createElement("select");
-	var elm2 = document.createElement("OPTION");
-	
-	console.log(uur.waarde);
-	elm2.innerHTML = uur.waarde;
-	elm1.appendChild(elm2);
-
+	elm1.id = uur.id;
+	var arr = ["Gewerkte Uren", "Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
+	for(var i = 0; i<arr.length; i++){
+		var option = document.createElement("OPTION"),
+		txt = document.createTextNode(arr[i]);
+		option.appendChild(txt);
+		option.value = arr[i];
+		elm1.insertBefore(option,elm1.lastChild);
+		if(arr[i] === uur.waarde){
+			elm1.value = uur.waarde;
+		}
+	}
+	console.log(elm1.value);
 	insertedCell1.appendChild(elm1);
-
+	//aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);
 	var emp3 = document.createElement("input");
 	emp3.type = "number";
 	emp3.value = uur.aantal;
-				
-				insertedCell2.appendChild(emp3);
+	insertedCell2.appendChild(emp3);
+	console.log(insertedCell1);
 }
 
 //functie om rijen toe te voegen aan de tabel
@@ -204,7 +295,7 @@ function addRowUrenTabel(){
 	table = document.getElementById("urenTabel");
 	var insertedRow = table.insertRow(2);
 	insertedRow.id = "0";
-	insertedRow.className = "urenRow";
+	// insertedRow.className = "urenRow";
 	for(var i = 0; i<3; i++){
 		var insertedCell = insertedRow.insertCell(i);
 		insertedCell.id = IDCell++;
@@ -222,11 +313,8 @@ function addRowUrenTabel(){
 				selectID++;
 				var temp1 = document.createElement("select");
 				temp1.id = "select"+selectID;
-
-
 				var temp2 = document.createElement("OPTION");
 				temp2.innerHTML = "Gewerkte Uren"
-
 				temp1.appendChild(temp2);
 				insertedCell.appendChild(temp1);
 			}
@@ -275,7 +363,13 @@ function addRowDeclaratieTabel(){
 }
 
 
-//sorteerfunctie
+
+
+
+
+
+
+//sorteerfunctie nu niet belangrijk! mag je negeren
 var TableIDvalue = "TabelOverzicht";
 var TableLastSortedColumn = -1;
 function SortTable() {
