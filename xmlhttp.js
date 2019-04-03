@@ -15,7 +15,8 @@ function traineeFields(){
     trainee.username = username; 
     trainee.wachtwoord = wachtwoord;
     trainee.loon = loon;
-    trainee.type = type; 
+    trainee.type = type;
+    trainee.uren = new Array(); 
     return trainee;
 }
 
@@ -120,6 +121,7 @@ function wijzigTrainee(){
   huidigeTrainee.wachtwoord = document.getElementById("wachtwoord" + numbW).value;
   huidigeTrainee.loon = document.getElementById("loon" + numbW).value;
   huidigeTrainee.type = document.getElementById("type" + numbW).value;
+  huidigeTrainee.uren = document.getElementById("uren" + numbW).value;
   console.log(huidigeTrainee);
   var xhttp = new XMLHttpRequest();
    xhttp.onreadystatechange = function() {
@@ -166,6 +168,8 @@ function voegTraineeToe(element, trainee){
   t.value = trainee.type;
   t.id = "type"+tID;
   e.appendChild(t);
+  t = document.createElement("input");
+
 }
 
 
@@ -189,6 +193,7 @@ function traineeTableHeader() {
    addHtmlElementContent(tr, document.createElement("th"), "Username");
    addHtmlElementContent(tr, document.createElement("th"), "Wachtwoord");
    addHtmlElementContent(tr, document.createElement("th"), "Loon");
+   addHtmlElementContent(tr, document.createElement("th"), "Uren");
    return tableHeader;
 }
 
@@ -200,6 +205,7 @@ function traineeTableRow(trainee) {
    addHtmlElementContent(tr, document.createElement("td"), trainee.username);
    addHtmlElementContent(tr, document.createElement("td"), trainee.wachtwoord);
    addHtmlElementContent(tr, document.createElement("td"), trainee.loon);
+   addHtmlElementContent(tr, document.createElement("th"), trainee.uren);
    return tr;
 }
 

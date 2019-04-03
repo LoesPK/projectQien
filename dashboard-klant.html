@@ -6,20 +6,16 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body>
+<body onload="getUren()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 	</nav>
 	<div class="wrapperKlant">
 		  <h1>Trainees</h1>
-		<ul class="overzichtTrainees" id="goedkeurenUren">
-		  <li class="task">Fred</li>
-		  <li class="task">Karel</li>
-		  <li>George</li>
-		  <li>Anita</li>
-		  <li>Priscilla</li>
-		  <li>Piet</li>
-		</ul>
+			<div id="traineelijst"></div>
+			<button onclick="akkoordVerzenden()">Versturen naar Qien</button>
 	</div>
+
+	<script type="text/javascript" src="jScriptklant.js"></script>
 </body>
 </html>

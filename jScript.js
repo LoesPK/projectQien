@@ -2,11 +2,12 @@ var IDCell = 1;
 var selectID = 0;
 var dateID = 0;
 var aantalID = 0;
+
 //Loes: onderstaande is het javascript datum opject
 var date = new Date();
 //Loes: de twee api's
 var api = "http://localhost:8082/api/uur/";
-var api2 = "http://localhost:8082/api/trainee";
+var api2 = "http://localhost:8082/api/trainee/1";
 // var tijdsform = getData();
 var urenlijst = new Array();
 
@@ -49,61 +50,79 @@ function drop(selectID){
 }
 
 
+
+
 //GET tijdsformulier
-function getTrainee(){
-  var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-  		console.log(this.responseText);
-    	var tijdsform = JSON.parse(this.responseText);	
-      console.log(tijdsform.length);
-     			return tijdsform;
-      }
-    };
-      xhttp.open("GET", api2, true);
-	    xhttp.setRequestHeader("Content-type", "application/json");
-	    xhttp.send();	
-}
+// function getTrainee(){
+//   var xhttp = new XMLHttpRequest();
+//     xhttp.onreadystatechange = function() {
+//       if (this.readyState == 4 && this.status == 200) {
+//   		console.log(this.responseText);
+//     	var trainee = JSON.parse(this.responseText);	
+//      	return trainee;
+//       }
+//     };
+//       xhttp.open("GET", api2, true);
+// 	    xhttp.setRequestHeader("Content-type", "application/json");
+// 	    xhttp.send();	
+// }
 
 // uren koppelen aan tijdsformulier functie
-function tijdVersturen(){
-var urenlijst = new Array();
-	for(var i = 0; i<=aantalID; i++){
-		console.log("aantalID" + (aantalID + i));	
-  var row = document.getElementById("select"+i).parentNode.parentNode;
-  
-	console.log("element" + document.getElementById("select"+i));
-  console.log(row.id);
-  var uur = {}
- 	uur.id = row.id;
+// function tijdVanTraineeVersturen(){
+// var traineeThis = getTrainee(); 
+// var urenlijst = new Array();
+// 	for(var i = 0; i<=aantalID; i++){
+		
+//   	var row = document.getElementById("select"+i).parentNode.parentNode;
+//   	var uur = {}
+//  	uur.id = row.id;
+//  	urenlijst.push(uur);
+//  	uur.accordStatus = 1;
+//  	akkoordUur(uur, uur.id);
+//  }
+//   	console.log("traineeversturen" + urenlijst)
+// 	var trainee = {}
+// 	console.log(urenlijst);
+//  		trainee.uren = urenlijst;	
+// 		console.log(trainee.uren);
+// 		console.log(JSON.stringify(trainee.uren));
+// 		console.log(JSON.stringify(trainee));
+// 	posttijd(JSON.stringify(trainee));	
+// };
 
- 	 urenlijst.push(uur);
- }
-  	console.log("tijdversturen" + urenlijst)
-	var tijdsFormulier = {}
-	console.log(urenlijst);
- 		tijdsFormulier.uren = urenlijst;	
-		tijdsFormulier.test = "text";
-		console.log(tijdsFormulier.uren);
-		console.log(JSON.stringify(tijdsFormulier.uren));
-		console.log(JSON.stringify(tijdsFormulier));
-	posttijd(JSON.stringify(tijdsFormulier));	
-};
 
+//PUT uren
+// function akkoordUur(uur, i) {
+//    var xhttp = new XMLHttpRequest();
+
+//    xhttp.onreadystatechange = function () {
+//        if (this.readyState == 4) {
+//            if (this.status == 200) {
+//            	uur.accordStatus = 1;
+//            } else {
+//                alert(this.statusText)
+//            }
+//        }
+//    };
+   
+//    xhttp.open("PUT", api+i, true);
+//    xhttp.setRequestHeader("Content-type", "application/json");
+//    xhttp.send(JSON.stringify(uur));  
+// }
 
 //POST tijdsformulier
-function posttijd(tijd){
-	console.log(tijd);
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
-    }
-  };
-  xhttp.open("POST", api2, true);
-	xhttp.setRequestHeader("Content-type", "application/json");
-	xhttp.send(tijd);
-}
+// function posttijd(trainee){
+// 	console.log(trainee);
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+//       console.log(this.responseText);
+//     }
+//   };
+//   xhttp.open("PUT", api2, true);
+// 	xhttp.setRequestHeader("Content-type", "application/json");
+// 	xhttp.send(trainee);
+// }
 
 //GET uren
 function getUren(){
@@ -123,9 +142,15 @@ function getUren(){
 	    xhttp.send();	
 };
 
+function UrenVerzenden(){
+	bool = true;
+	UrenOpslaan();
+}
 
-//Uren versturen functie
-function UrenVersturen(){
+
+
+//Uren Opslaan functie
+function UrenOpslaan(){
 
 	var urenlijst = new Array();
 	var table = document.getElementById("urenTabel");
@@ -163,6 +188,7 @@ console.log("Start loop" + aantal);
 	uur.aantal = chi2.value; 
 	var d = new Date(chi0.value);
 	uur.factuurDatum = d;
+	uur.accordStatus = 0;
 
   	urenlijst.push(uur);
 
@@ -173,6 +199,7 @@ console.log("Start loop" + aantal);
 		 };
 	//PUT alleen als het id van uren geen 0 is (ofwel, hij staat al in de database) en als de waarde daadwerkelijk anders is geworden.
 		if(tablerow.id !=0){
+			uur.accordStatus = 1;
 			// var datum = uur.id.factuurDatum;
 			console.log(uur.factuurDatum);
 			// console.log(tablerow);
@@ -206,7 +233,7 @@ function PostData(data, rij){
     	var uren = JSON.parse(this.responseText);
     	rij.id = uren.id;
     	console.log(rij.id);
-    	
+    	// tijdVanTraineeVersturen();
         }
   };
   xhttp.open("POST", api, true);
@@ -351,46 +378,23 @@ function addRowDeclaratieTabel(){
 
 
 
-// function UrenBlokkeren(){
-// 	var table = document.getElementById("urenTabel");
-// 	console.log(table);
-// 	// var aantal = table.children[2];
-// 	var tablebody = table.children[2];
-// 	console.log(tablebody);
-// 	var aantal = tablebody.children.length;
 
-// console.log("Start loop" + aantal);
-
-//    for(var i = 0; i<aantal; i++){
-//  	var uur = {}
-//    	var tablerow = tablebody.children[i];
-//    	uur.id = tablerow.id;
-// 	var c = tablerow.children;
-// 		// console.log("chi " + ch);
-// 		// console.log("chi0 " + chi0);
-// 		// console.log("chi2 " + chi2);
-// 	//soort uren veld
-// 	var ch = c[1];
-// 	var chi = ch.children[0];
-
-// 	chi.readOnly =true;
-// 	//datumveld
-// 	var ch0 = c[0];
-
-// 	var chi0 = ch0.children[0];
-
-// 	chi0.readOnly =true;
-
-// 	//aantal urenveld
-// 	var ch2 = c[2];
-// 	var chi2 = ch2.children[0];
-
-// 	chi2.readOnly =true;
-
-// 	var d = new Date(chi0.value);
-// };
-
-// }
+//GET uren
+function getUur(){
+ 	 	var xhttp = new XMLHttpRequest();
+    	xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+  		console.log(this.responseText);
+    	var uren = JSON.parse(this.responseText);	
+      	for(var i = 0; i<uren.length; i++){
+      		 return uren[i];
+      	}
+      }
+    };
+      xhttp.open("GET", api, true);
+	    xhttp.setRequestHeader("Content-type", "application/json");
+	    xhttp.send();	
+};
 
 
 
